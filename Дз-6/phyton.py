@@ -1,65 +1,84 @@
 ﻿
-print("спасибо за вход")
+print("Welcome to Python Task Manager")
 
-is_running = True
-collection = [1234]
+run_ = True
+tasks = ["task 1", "task 2", "task 3"]
 
+
+# Shows task list in console
 def ShowCollection(task_list):
     print("=" * 30)
-    for key, item in enumerate(task_list):
-        print(key + 1, item)
+    for key, task in enumerate(task_list):
+        print(key + 1, task)
     print("=" * 30)
 
 
-def ShowMassage(Massage = None, mess_action = None  ):
-    if Massage is not None:
-        print(f"задача {Massage} {mess_action}")
-        ShowCollection(collection)
-    input("нажмите любую кнопу для продолжени")
+# Shows message and waits for continuation
+def ShowMassage(task=None, action=None):
+    if task is not None:
+        print(f"task {task} {action}")
+        ShowCollection(tasks)
 
-"""подтеврждение действия"""
-def chek_confirm(action: str):
-    confirm = input("точно?"
-                    "\n Y/N")
-    if (confirm.capitalize().startswith('') == "Y"
-            or 'Д'):
+    input("Press any button to continue")
+
+
+# Confirms action
+def chek_confirm(action):
+    confirm = input("Are you sure?\nY/N: ")
+
+    if confirm.upper() == "Y" or confirm.upper() == "Д":
         print(action)
         return False
     else:
-        print("отмена")
+        print("cancelled")
         return True
 
 
-while is_running  :
-    print('1 - посмотреть задачи'
-          '\n2 - добавить задачу'
-          '\n3 - редактирование'
-          '\n4 - снять задачу'
-          '\n5 - выход')
-    choice_user = input("введите команду: ")
+while run_:
+    print(
+        "1 - View tasks"
+        "\n2 - Add task"
+        "\n3 - Rename task"
+        "\n4 - Remove task"
+        "\n5 - Exit"
+    )
 
-    match choice_user:
-        case "1":  #просмотр списка
-            ShowCollection(collection)
+    choice = input("Select option: ")
+
+    match choice:
+        case "1":  # View task list
+            ShowCollection(tasks)
             ShowMassage()
-        case "2":  #добавление в список
-            task_name = input('введите название задачи: ')
-            collection.append(task_name)
-            ShowMassage(task_name, 'добавленна')
-        case "3":  #изменение элемента
-            ShowCollection(collection)
-            select_edit = int(input('введите номер задачи: '))
-            edit_name = input("новое имя задачи: ")
-            collection[select_edit - 1 ] = edit_name
-            ShowMassage(edit_name, 'измененна')
-        case "4":  #удаление элемента
-            ShowCollection(collection)
-            delete_edit = int(input('введите номер задачи: '))
-            if not chek_confirm('удаление выполненно'):
-                collection.pop(delete_edit - 1)
-            ShowMassage(delete_edit, 'удалена')
-        case "5":  #завершение цикла
-            is_running = chek_confirm('отключение...')
-        case _:  #неверная команда
-            print('неверная команда')
+
+        case "2":  # Add task
+            task_name = input("Enter task's name: ")
+            tasks.append(task_name)
+            ShowMassage(task_name, "added")
+
+        case "3":  # Rename task
+            ShowCollection(tasks)
+            task_choice = int(input("Enter task number: "))
+            task_name = input("Enter new task's name: ")
+
+            tasks[task_choice - 1] = task_name
+            ShowMassage(task_name, "renamed")
+
+        case "4":  # Remove task
+            ShowCollection(tasks)
+            task_choice = int(input("Enter task number: "))
+
+            if not chek_confirm("Task removed"):
+                tasks.pop(task_choice - 1)
+
+            ShowMassage(task_choice, "removed")
+
+        case "5":  # Exit program
+            run_ = chek_confirm("Exiting...")
+
+        case _:  # Invalid option
+            print("Invalid option")
             ShowMassage()
+
+print("Goodbye")
+
+
